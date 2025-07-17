@@ -1,46 +1,47 @@
-import React, { useEffect, useRef } from 'react';
-import type { BookMarks, BookMark } from '../types';
+import React from 'react';
+import type { BookMarks } from '../types';
 import { getFaviconUrl } from '../lib';
 
 interface BookmarkListProps {
     bookmarks: BookMarks;
-    focusedBookmark?: BookMark | null;
 }
 
-const BookmarkList: React.FC<BookmarkListProps> = ({ bookmarks, focusedBookmark }) => {
-    const focusedRef = useRef<HTMLAnchorElement>(null);
-
-    useEffect(() => {
-        if (focusedRef.current) {
-            focusedRef.current.focus();
-        }
-    }, [focusedBookmark]);
-
+const BookmarkList: React.FC<BookmarkListProps> = ({ bookmarks }) => {
     return (
         <div className="max-w-6xl mx-auto">
             {Object.keys(bookmarks).map((category) => (
                 <div key={category} className="mb-8">
-                    <div className='mb-4 flex'>
+                    <div className="mb-4 flex">
                         <h2 className="text-2xl font-bold capitalize">
                             {category}
                         </h2>
                     </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {bookmarks[category].map((bookmark, index) => {
                             const faviconUrl = getFaviconUrl(bookmark.url);
-                            const isFocused = focusedBookmark && focusedBookmark.url === bookmark.url && focusedBookmark.title === bookmark.title;
+
                             return (
-                                <a ref={isFocused ? focusedRef : null} rel="noopener noreferrer" href={bookmark.url} key={index} className={`bg-white relative cursor-pointer rounded-lg shadow-md p-4 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-in-out transform group ${isFocused ? 'bg-neutral-200' : ''}`}>
+                                <a
+                                    key={index}
+                                    href={bookmark.url}
+                                    rel="noopener noreferrer"
+                                    className="bg-white relative cursor-pointer rounded-lg shadow-md p-4 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-in-out transform group"
+                                >
                                     <div className="flex items-start">
-                                        <img src={bookmark.customIconUrl || faviconUrl} alt="" className=" mr-3 rounded-sm h-12 w-12" />
+                                        <img
+                                            src={bookmark.customIconUrl || faviconUrl}
+                                            alt=""
+                                            className="mr-3 rounded-sm h-12 w-12"
+                                        />
                                         <div className="flex flex-col align-text-top">
-                                            <p
-                                                className="text-neutral-800 font-medium"
-                                            >
+                                            <p className="text-neutral-800 font-medium">
                                                 {bookmark.title}
                                             </p>
                                             {bookmark.description && (
-                                                <p className="text-gray-600 text-sm">{bookmark.description}</p>
+                                                <p className="text-gray-600 text-sm">
+                                                    {bookmark.description}
+                                                </p>
                                             )}
                                         </div>
                                     </div>
