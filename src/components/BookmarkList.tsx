@@ -1,12 +1,21 @@
-import React from 'react';
-import type { BookMarks } from '../types';
+import React, { useEffect, useRef } from 'react';
+import type { BookMarks, BookMark } from '../types';
 import { getFaviconUrl } from '../lib';
 
 interface BookmarkListProps {
     bookmarks: BookMarks;
+    focusedBookmark?: BookMark | null;
 }
 
-const BookmarkList: React.FC<BookmarkListProps> = ({ bookmarks }) => {
+const BookmarkList: React.FC<BookmarkListProps> = ({ bookmarks, focusedBookmark }) => {
+    const focusedRef = useRef<HTMLAnchorElement>(null);
+
+    useEffect(() => {
+        if (focusedRef.current) {
+            focusedRef.current.focus();
+        }
+    }, [focusedBookmark]);
+
     return (
         <div className="max-w-6xl mx-auto">
             {Object.keys(bookmarks).map((category) => (
@@ -19,9 +28,10 @@ const BookmarkList: React.FC<BookmarkListProps> = ({ bookmarks }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {bookmarks[category].map((bookmark, index) => {
                             const faviconUrl = getFaviconUrl(bookmark.url);
+                            const isFocused = focusedBookmark && focusedBookmark.url === bookmark.url && focusedBookmark.title === bookmark.title;
                             return (
-                                <div key={index} className="bg-white relative cursor-pointer focus:bg-neutral-200 rounded-lg shadow-md p-4 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-in-out transform group">
-                                    <a href={bookmark.url} rel="noopener noreferrer" className="flex items-start">
+                                <a ref={isFocused ? focusedRef : null} rel="noopener noreferrer" href={bookmark.url} key={index} className={`bg-white relative cursor-pointer rounded-lg shadow-md p-4 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-in-out transform group ${isFocused ? 'bg-neutral-200' : ''}`}>
+                                    <div className="flex items-start">
                                         <img src={bookmark.customIconUrl || faviconUrl} alt="" className=" mr-3 rounded-sm h-12 w-12" />
                                         <div className="flex flex-col align-text-top">
                                             <p
@@ -33,8 +43,8 @@ const BookmarkList: React.FC<BookmarkListProps> = ({ bookmarks }) => {
                                                 <p className="text-gray-600 text-sm">{bookmark.description}</p>
                                             )}
                                         </div>
-                                    </a>
-                                </div>
+                                    </div>
+                                </a>
                             );
                         })}
                     </div>
