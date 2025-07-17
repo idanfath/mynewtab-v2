@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import type { BookMarks } from './types';
+import { useState, useEffect } from 'react';
+import Header from './components/Header';
+import BookmarkList from './components/BookmarkList';
+import EditorModal from './components/EditorModal';
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [bookmarks, setBookmarks] = useState<BookMarks>(
+        localStorage.getItem('bookmarks') ? JSON.parse(localStorage.getItem('bookmarks')!) : {
+            'default': [
+                {
+                    title: 'Example Bookmark',
+                    url: 'https://example.com',
+                    description: 'This is an example bookmark.',
+                }
+            ]
+        });
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const [isEditorOpen, setIsEditorOpen] = useState(false);
+    const [editorContent, setEditorContent] = useState('');
+
+    useEffect(() => {
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+    }, [bookmarks]);
+
+    const handleEditorOpen = () => {
+        setEditorContent(JSON.stringify(bookmarks, null, 2));
+        setIsEditorOpen(true);
+    };
+
+    const handleEditorSave = () => {
+        try {
+            const newBookmarks = JSON.parse(editorContent);
+            setBookmarks(newBookmarks);
+            setIsEditorOpen(false);
+        } catch (error) {
+            alert('Error parsing JSON. Please check the format.');
+            console.error("Failed to parse bookmarks JSON:", error);
+        }
+    };
+
+    return (
+        <div className="min-h-screen p-6">
+            <Header onEdit={handleEditorOpen} />
+            <EditorModal
+                isOpen={isEditorOpen}
+                content={editorContent}
+                onSave={handleEditorSave}
+                onCancel={() => setIsEditorOpen(false)}
+                onContentChange={setEditorContent}
+            />
+            <BookmarkList bookmarks={bookmarks} />
+        </div>
+    )
 }
 
 export default App
