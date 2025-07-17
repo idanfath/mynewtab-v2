@@ -4,7 +4,7 @@ import Header from './components/Header';
 import BookmarkList from './components/BookmarkList';
 import EditorModal from './components/EditorModal';
 import Fuse from 'fuse.js';
-import logo from '../icon.png'; // Ensure you have a logo image in your assets
+import icon from '../icon.png'; // Ensure you have a logo image in your assets
 
 function App() {
     // State management
@@ -131,8 +131,8 @@ function App() {
             />
 
             {/* Search Bar */}
-            <div className="max-w-2xl mx-auto mb-8">
-                <img src={logo} alt="" />
+            <div className="max-w-2xl mx-auto flex justify-center mb-8">
+                <img src={icon} />
             </div>
             <div className="max-w-2xl mx-auto mb-8">
                 <form onSubmit={handleSearchSubmit} className="relative">
