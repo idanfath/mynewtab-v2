@@ -1,6 +1,6 @@
 # MyNewTab - A Modern, Customizable New Tab Page
 
-MyNewTab is a sleek and customizable new tab page built with React, TypeScript, and Vite. It allows you to organize your favorite websites into categories and access them quickly. It features a built-in JSON editor to easily manage your bookmarks.
+MyNewTab is a sleek and customizable new tab page built with React, TypeScript, and Vite. It allows you to organize your favorite websites into categories and access them quickly. It features a built-in JSON editor to easily manage your bookmarks. You can try the app [here](https://mynewtab-v2.vercel.app/).
 
 ## Features
 
