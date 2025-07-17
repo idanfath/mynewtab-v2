@@ -163,7 +163,7 @@ function App() {
                                     <div className="flex-1">
                                         <div className="text-sm font-medium text-gray-900">
                                             {bookmark.title}
-                                            <span className="text-xs text-gray-500"> - {bookmark.category}</span>
+                                            <span className="text-xs text-gray-500 capitalize"> - {bookmark.category}</span>
                                         </div>
                                         <div className="text-xs text-gray-500">{bookmark.description}</div>
                                     </div>
