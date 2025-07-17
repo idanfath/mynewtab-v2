@@ -21,11 +21,11 @@ const BookmarkList: React.FC<BookmarkListProps> = ({ bookmarks }) => {
                             const faviconUrl = getFaviconUrl(bookmark.url);
                             return (
                                 <div key={index} className="bg-white relative cursor-pointer focus:bg-neutral-200 rounded-lg shadow-md p-4 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-in-out transform group">
-                                    <a href={bookmark.url} rel="noopener noreferrer" className="flex">
-                                        <img src={bookmark.customIconUrl || faviconUrl} alt="" className=" mr-3 rounded-sm h-12" />
-                                        <div className="flex flex-col justify-center ">
+                                    <a href={bookmark.url} rel="noopener noreferrer" className="flex items-start">
+                                        <img src={bookmark.customIconUrl || faviconUrl} alt="" className=" mr-3 rounded-sm h-12 w-12" />
+                                        <div className="flex flex-col align-text-top">
                                             <p
-                                                className="text-neutral-800 font-medium text-lg "
+                                                className="text-neutral-800 font-medium"
                                             >
                                                 {bookmark.title}
                                             </p>
